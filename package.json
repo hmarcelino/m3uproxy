@@ -1,0 +1,29 @@
+{
+  "name": "iptv-proxy",
+  "version": "1.0.0",
+  "main": "src/index.ts",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "axios": "^0.18.0",
+    "cheerio": "^1.0.0-rc.2",
+    "js-yaml": "^3.13.1",
+    "mustache": "^3.0.1"
+  },
+  "devDependencies": {
+    "@types/js-yaml": "^3.12.1",
+    "@types/mustache": "^0.8.32",
+    "@types/cheerio": "^0.22.11",
+    "ts-node": "^8.1.0",
+    "typescript": "^3.4.1"
+  },
+  "scripts": {
+    "clean": "rm -rf dist/",
+    "build": "tsc",
+    "watch-build": "tsc -w",
+    "tests": "jest --coverage",
+    "watch-tests": "jest --watchAll",
+    "dev": "ts-node src/index.ts -f ./config/config-dev.yml",
+    "prod": "ts-node src/index.ts -f ./config/config-prod.yml"
+  }
+}

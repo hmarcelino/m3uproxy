@@ -1,0 +1,14 @@
+m3uUrlFile: http://localhost:8080/channels.m3u
+
+tempDir: ./files
+
+sourceM3uFile: source-channels.m3u
+proxyM3uFile: channels.m3u
+
+nginx:
+  baseProxyUrl: http://server.local:9090/channel/
+  templateFile: ./config/nginx.tmpl
+  wwwRootDir: /Users/hugomarcelino/projects/myprojects/m3u-file-transformer/files
+  logDir: /Users/hugomarcelino/projects/myprojects/m3u-file-transformer/files/logs
+  configFile: /Users/hugomarcelino/projects/myprojects/m3u-file-transformer/files/iptv-proxy.conf
+  reload: false
