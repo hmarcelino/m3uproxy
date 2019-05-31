@@ -5,26 +5,36 @@ import * as ChildProcess from "child_process";
 import {M3uFileParser} from "./modules/m3u-file-parser";
 import {YamlConfigLoader} from "./modules/config-loader";
 // tools
-import Axios from 'axios'
+import Axios from "axios"
 import * as Mustache from "mustache";
+import * as ParseArgs from "minimist";
 
-const config = YamlConfigLoader("./config/config-dev.yml");
+const args = ParseArgs(process.argv.splice(2), {
+    alias: {f: "file"}
+});
 
-Axios({url: config.m3uUrlFile, method: 'get'})
+if (!args.file) {
+    console.log(`Missing config file:\nUsage: yarn run run <yaml-config-file-path>`);
+    process.exit(1);
+}
+
+const config = YamlConfigLoader(args.file);
+
+Axios({url: config.m3uUrlFile, method: "get"})
     .then(resp => {
         const newM3uFileContent = resp.data;
 
         if (File.existsSync(`${config.tempDir}/${config.sourceM3uFile}`)) {
-            const oldM3uMd5 = Crypto.createHash('md5')
+            const oldM3uMd5 = Crypto.createHash("md5")
                 .update(File.readFileSync(`${config.tempDir}/${config.sourceM3uFile}`))
                 .digest("hex");
 
-            const mewM3uMd5 = Crypto.createHash('md5')
+            const mewM3uMd5 = Crypto.createHash("md5")
                 .update(newM3uFileContent)
                 .digest("hex");
 
             if (oldM3uMd5 === mewM3uMd5) {
-                throw new Error("M3U file don't have any differences");
+                throw new Error("M3U file don\"t have any differences");
             }
         }
 
@@ -64,11 +74,11 @@ Axios({url: config.m3uUrlFile, method: 'get'})
         File.writeFileSync(`${config.nginx.configFile}`, nginxConfig);
 
         if (config.nginx.reload) {
-            ChildProcess.exec('nginx -s reload')
+            ChildProcess.exec("nginx -s reload")
         }
     })
     .catch((err: any) => {
         console.log(err);
-        process.exit(1);
+        process.exit(10);
     });
 
