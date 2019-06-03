@@ -8,3 +8,4 @@ coverage/
 files/
 
 output.log
+config/config-prod.yml
