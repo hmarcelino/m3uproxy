@@ -8,6 +8,7 @@ import {YamlConfigLoader} from "./modules/config-loader";
 import Axios from "axios"
 import * as Mustache from "mustache";
 import * as ParseArgs from "minimist";
+import {ConsoleLogger, FileLogger, LoggingDispacther} from "./modules/logging";
 
 const args = ParseArgs(process.argv.splice(2), {
     alias: {f: "file"}
@@ -18,7 +19,25 @@ if (!args.file) {
     process.exit(1);
 }
 
+//********************************
+// Initial setup
+//********************************
+
 const config = YamlConfigLoader(args.file);
+
+let loggers = [new ConsoleLogger()];
+if (config.logging) {
+    loggers.push(new FileLogger(config.logging.file))
+}
+
+const logging = new LoggingDispacther(loggers);
+
+//********************************
+// Proxy process
+//********************************
+
+logging.write("=============================================");
+logging.write(new Date().toISOString());
 
 Axios({url: config.m3uUrlFile, method: "get"})
     .then(resp => {
@@ -78,7 +97,8 @@ Axios({url: config.m3uUrlFile, method: "get"})
         }
     })
     .catch((err: any) => {
-        console.log(err);
+        logging.write(err.toString());
         process.exit(10);
-    });
+    })
+    .finally(() => logging.write("process finished"));
 

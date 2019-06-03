@@ -4,6 +4,7 @@ export interface Config {
     sourceM3uFile: string,
     proxyM3uFile: string
     nginx: NginxConfig
+    logging: Logging
 }
 
 export interface NginxConfig {
@@ -13,4 +14,9 @@ export interface NginxConfig {
     templateFile: string
     configFile: string
     reload: string
+}
+
+export interface Logging {
+    enabled: boolean
+    file: string
 }

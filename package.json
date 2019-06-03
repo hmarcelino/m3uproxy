@@ -26,7 +26,7 @@
     "tests": "jest --coverage",
     "watch-tests": "jest --watchAll",
     "dev": "ts-node src/index.ts -f ./config/config-dev.yml",
-    "prod": "ts-node src/index.ts -f yarn./config/config-prod.yml",
+    "prod": "ts-node src/index.ts -f ./config/config-prod.yml",
     "run": "ts-node src/index.ts"
   }
 }

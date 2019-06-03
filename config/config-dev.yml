@@ -12,3 +12,7 @@ nginx:
   logDir: /Users/hugomarcelino/projects/myprojects/m3u-file-transformer/files/logs
   configFile: /Users/hugomarcelino/projects/myprojects/m3u-file-transformer/files/iptv-proxy.conf
   reload: false
+
+logging:
+  enabled: true
+  file: /Users/hugomarcelino/projects/myprojects/m3u-file-transformer/files/m3u.log
