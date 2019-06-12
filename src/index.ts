@@ -67,13 +67,13 @@ Axios({url: config.m3uUrlFile, method: "get"})
         // to the local server
         //********************************
 
-        const newM3uFileContent =
+        const proxyM3uFileContent =
             "#EXTM3U\n" +
             m3uFileParser.channels
                 .map(channel => `${channel.extraInfo}\n${config.nginx.baseProxyUrl}${channel.channelKey()}`)
                 .join("\n");
 
-        File.writeFileSync(`${config.nginx.wwwRootDir}/${config.proxyM3uFile}`, newM3uFileContent);
+        File.writeFileSync(`${config.nginx.wwwRootDir}/${config.proxyM3uFile}`, proxyM3uFileContent);
         return m3uFileParser;
     })
     .then((m3uFileParser) => {
