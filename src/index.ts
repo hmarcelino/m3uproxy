@@ -15,7 +15,7 @@ const args = ParseArgs(process.argv.splice(2), {
 });
 
 if (!args.file) {
-    console.log(`Missing config file:\nUsage: yarn run run <yaml-config-file-path>`);
+    console.log(`Missing config file:\nUsage: -f <yaml-config-file-path>`);
     process.exit(1);
 }
 
