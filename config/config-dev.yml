@@ -14,5 +14,5 @@ nginx:
   reload: false
 
 logging:
-  enabled: true
+  enabled: false
   file: /Users/hugomarcelino/projects/myprojects/m3u-file-transformer/files/m3u.log

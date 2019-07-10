@@ -30,7 +30,7 @@ if (!File.existsSync(`${config.tempDir}}`)) {
 }
 
 let loggers = [new ConsoleLogger()];
-if (config.logging) {
+if (config.logging.enabled) {
     loggers.push(new FileLogger(config.logging.file))
 }
 
