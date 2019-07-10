@@ -10,7 +10,6 @@
 ### Setup Project
 * git clone `git@github.com:hmarcelino/m3u-proxy.git`
 * cd m3u-proxy
-* mkdir -p files
 * copy `config/config-dev.yml` and change necessary configuration
 * run `yarn run run -f <path-to-yaml-file>`
 

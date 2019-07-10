@@ -25,6 +25,10 @@ if (!args.file) {
 
 const config = YamlConfigLoader(args.file);
 
+if (!File.existsSync(`${config.tempDir}}`)) {
+    File.mkdirSync(config.tempDir, {recursive: true})
+}
+
 let loggers = [new ConsoleLogger()];
 if (config.logging) {
     loggers.push(new FileLogger(config.logging.file))
