@@ -3,6 +3,6 @@
 *.iml
 
 # Specific to project
-dist/
+bin/
 files/
 config/config-prod.yml
