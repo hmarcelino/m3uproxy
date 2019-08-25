@@ -3,4 +3,4 @@ server:
   hostname: server.local
 
 m3u:
-  originUrl: http://localhost:8080/channels.m3u
+  url: http://localhost:8080/channels.m3u

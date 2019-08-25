@@ -3,7 +3,9 @@ package config
 import (
 	"gopkg.in/yaml.v2"
 	"io/ioutil"
+	"log"
 	"os"
+	"strings"
 )
 
 type Config struct {
@@ -11,32 +13,42 @@ type Config struct {
 		Port     int
 		Hostname string
 	}
+
 	M3u struct {
-		OriginUrl string
+		Url string
 	}
 }
 
-func LoadYmlFile(configFilePath string) (Config, error) {
+func LoadYml(ymlConfigFile string) *Config {
+	ymlConfigFile = strings.TrimSpace(ymlConfigFile)
+	if len(ymlConfigFile) == 0 {
+		log.Fatalf("No configuration file provided")
+	}
+
+	m3uServerConfig, err := readYmlFile(ymlConfigFile)
+	if err != nil {
+		log.Fatalf("Error reading configuration file: %v", err)
+	}
+	return m3uServerConfig
+}
+
+func readYmlFile(configFilePath string) (*Config, error) {
 	var config = Config{}
 	config.Server.Port = 9090
 	config.Server.Hostname = "localhost"
 
 	yamlBytes, err := readFile(configFilePath)
 	if err != nil {
-		return config, err
+		return nil, err
 	}
 
-	err = yaml.Unmarshal([]byte(yamlBytes), &config)
+	err = yaml.Unmarshal(yamlBytes, &config)
 	if err != nil {
-		return config, err
+		return nil, err
 	}
 
-	return config, nil
+	return &config, nil
 }
-
-// ++++++++++++++++++++++++++++
-// Helper methods
-// ++++++++++++++++++++++++++++
 
 func readFile(configFilePath string) ([]byte, error) {
 	var yamlBytes []byte
