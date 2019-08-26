@@ -7,8 +7,8 @@ import (
 )
 
 type Channel struct {
-	id     string
-	source *url.URL
+	Id     string
+	Source *url.URL
 }
 
 var channelsDB = make(map[string]*Channel)
@@ -17,28 +17,28 @@ var channelsDB = make(map[string]*Channel)
 func NewChannel(channelAddr string) (*Channel, error) {
 	urlChannel, err := url.Parse(channelAddr)
 	if err != nil {
-		return nil, fmt.Errorf("Error parsing url: *s", channelAddr)
+		return nil, fmt.Errorf("error parsing url: %s", channelAddr)
 	}
 
 	path := urlChannel.Path
 
 	return &Channel{
-		id:     path[strings.LastIndex(path, "/")+1:],
-		source: urlChannel,
+		Id:     path[strings.LastIndex(path, "/")+1:],
+		Source: urlChannel,
 	}, nil
 }
 
-func ClearDB() {
+func Reset() {
 	channelsDB = make(map[string]*Channel)
 }
 
-func RegisterChannel(m3uChannelAddr string) (*Channel, error) {
-	channel, err := NewChannel(m3uChannelAddr)
+func RegisterChannel(channelAddr string) (*Channel, error) {
+	channel, err := NewChannel(channelAddr)
 	if err != nil {
 		return nil, err
 	}
 
-	channelsDB[channel.id] = channel
+	channelsDB[channel.Id] = channel
 
 	return channel, nil
 }

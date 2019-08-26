@@ -1,17 +1,15 @@
 package routes
 
 import (
-	"fmt"
 	"github.com/hmarcelino/m3u-proxy/config"
-	"log"
+	"github.com/hmarcelino/m3u-proxy/server/webutils"
 	"net/http"
 )
 
+var resp = []byte("Welcome to m3u proxyHost")
+
 func RootRouter(config *config.Config) (string, func(w http.ResponseWriter, r *http.Request)) {
 	return "/", func(w http.ResponseWriter, r *http.Request) {
-		_, err := fmt.Fprintf(w, "Welcome to m3u proxy")
-		if err != nil {
-			log.Printf("Error writing to output welcome message: %v", err)
-		}
+		webutils.Success(resp, w)
 	}
 }

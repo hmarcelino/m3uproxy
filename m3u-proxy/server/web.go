@@ -28,7 +28,7 @@ func Start(config *config.Config) {
 
 	register(r, config, routes.RootRouter)
 	register(r, config, routes.PingRouter)
-	register(r, config, routes.ChannelsRouter)
+	register(r, config, routes.ChannelListRouter)
 
 	fmt.Printf(
 		Logo,
