@@ -52,9 +52,9 @@ func Start(config *config.Config) {
 		}
 	}()
 
-	_, err := http.Get(fmt.Sprintf("http://localhost:%d%s", config.Server.Port, routes.UriChannelList))
+	_, err := routes.LoadList(config)
 	if err != nil {
-		log.Fatalf("Error loading channels list: %s", err)
+		log.Fatalf(err.Msg+" %v", err.Error)
 	}
 
 	log.Println("List loaded successfully")

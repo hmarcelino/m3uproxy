@@ -35,9 +35,6 @@ func BadGateway(msg string, cause error, w http.ResponseWriter) {
 	writePayload([]byte(msg+"\n"+cause.Error()), w, true)
 }
 
-// TODO: In the future consider using a struct for this
-// It might make the method inputs easier to handle
-
 func writePayload(payload []byte, w http.ResponseWriter, isError bool) {
 	if isError {
 		log.Printf("An error occured: %s\n", payload)
