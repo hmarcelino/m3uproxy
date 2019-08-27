@@ -8,7 +8,7 @@ import (
 )
 
 func Validate(config *Config) {
-	err := joinValidationErrors(
+	err := concatErrors(
 		validateServerPort(config),
 		validateM3uUrl(config),
 	)
@@ -32,7 +32,7 @@ func validateM3uUrl(config *Config) error {
 	}
 	_, err := url.Parse(m3uUrl)
 	if err != nil {
-		return newValidationError(fmt.Sprintf("Error parsing m3u Url %s \n", m3uUrl))
+		return newValidationError(fmt.Sprintf("Invalid m3u Url: %s \n", m3uUrl))
 	}
 	return nil
 }
@@ -41,7 +41,7 @@ func newValidationError(s string) error {
 	return fmt.Errorf("* %s \n", s)
 }
 
-func joinValidationErrors(errors ...error) error {
+func concatErrors(errors ...error) error {
 	var joinErrors = ""
 
 	for _, e := range errors {

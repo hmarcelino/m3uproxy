@@ -49,6 +49,7 @@ func modifyResponse(config *config.Config, payload string) ([]byte, error) {
 
 	for i := 0; i < len(lines); i++ {
 		line := lines[i]
+
 		// Line holding metadata. Something like
 		// #EXTINF:-1 tvg-id="ABC HD" tvg-name="ABC FHD" ...
 		if !strings.HasPrefix(line, "http://") {

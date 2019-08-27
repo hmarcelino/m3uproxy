@@ -1,7 +1,6 @@
 package webutils
 
 import (
-	"errors"
 	"log"
 	"net/http"
 )
@@ -36,6 +35,4 @@ func writePayload(payload []byte, w http.ResponseWriter, isError bool) {
 			payload,
 			err)
 	}
-
-	errors.New()
 }

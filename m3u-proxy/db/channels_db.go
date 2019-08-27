@@ -32,13 +32,15 @@ func Reset() {
 	channelsDB = make(map[string]*Channel)
 }
 
-func RegisterChannel(channelAddr string) (*Channel, error) {
-	channel, err := NewChannel(channelAddr)
+func RegisterChannel(channelAddr string) (channel *Channel, err error) {
+	channel, err = NewChannel(channelAddr)
 	if err != nil {
-		return nil, err
+		return
 	}
 
 	channelsDB[channel.Id] = channel
+	return
+}
 
 	return channel, nil
 }

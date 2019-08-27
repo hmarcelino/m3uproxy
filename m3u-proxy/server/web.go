@@ -24,11 +24,11 @@ is accepting requests in port :%d
 `
 
 func Start(config *config.Config) {
-	r := mux.NewRouter()
+	muxRouter := mux.NewRouter()
 
-	register(r, config, routes.RootRouter)
-	register(r, config, routes.PingRouter)
-	register(r, config, routes.ChannelListRouter)
+	register(muxRouter, config, routes.RootRouter)
+	register(muxRouter, config, routes.PingRouter)
+	register(muxRouter, config, routes.ChannelListRouter)
 
 	fmt.Printf(
 		Logo,
@@ -37,7 +37,7 @@ func Start(config *config.Config) {
 		config.Server.Hostname,
 		config.Server.Port)
 
-	err := http.ListenAndServe(fmt.Sprintf(":%d", config.Server.Port), r)
+	err := http.ListenAndServe(fmt.Sprintf(":%d", config.Server.Port), muxRouter)
 	if err != nil {
 		log.Fatalf("Error starting server: %v", err)
 	}
