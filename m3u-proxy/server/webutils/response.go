@@ -14,6 +14,13 @@ func NotFound(w http.ResponseWriter) {
 	w.WriteHeader(404)
 }
 
+func BadRequest(msg string, cause error, w http.ResponseWriter) {
+	w.Header().Set("Content-Type", "text/plain; charset=utf-8")
+	w.Header().Set("X-Content-Type-Options", "nosniff")
+	w.WriteHeader(http.StatusBadRequest)
+	writePayload([]byte(msg+"\n"+cause.Error()), w, true)
+}
+
 func InternalServerError(msg string, cause error, w http.ResponseWriter) {
 	w.Header().Set("Content-Type", "text/plain; charset=utf-8")
 	w.Header().Set("X-Content-Type-Options", "nosniff")
