@@ -42,5 +42,10 @@ func RegisterChannel(channelAddr string) (channel *Channel, err error) {
 	return
 }
 
-	return channel, nil
+func LookupChannel(id string) (channel *Channel, err error) {
+	channel = channelsDB[id]
+	if channel == nil {
+		err = fmt.Errorf("No channel available with id: %s ", id)
+	}
+	return
 }

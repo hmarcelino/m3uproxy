@@ -29,6 +29,7 @@ func Start(config *config.Config) {
 	register(muxRouter, config, routes.RootRouter)
 	register(muxRouter, config, routes.PingRouter)
 	register(muxRouter, config, routes.ChannelListRouter)
+	register(muxRouter, config, routes.ChannelRoute)
 
 	fmt.Printf(
 		Logo,

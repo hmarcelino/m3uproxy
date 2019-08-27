@@ -10,13 +10,21 @@ func Success(b []byte, w http.ResponseWriter) {
 	writePayload(b, w, false)
 }
 
+func NotFound(w http.ResponseWriter) {
+	w.WriteHeader(404)
+}
+
 func InternalServerError(msg string, cause error, w http.ResponseWriter) {
-	w.WriteHeader(500)
+	w.Header().Set("Content-Type", "text/plain; charset=utf-8")
+	w.Header().Set("X-Content-Type-Options", "nosniff")
+	w.WriteHeader(http.StatusInternalServerError)
 	writePayload([]byte(msg+"\n"+cause.Error()), w, true)
 }
 
 func BadGateway(msg string, cause error, w http.ResponseWriter) {
-	w.WriteHeader(502)
+	w.Header().Set("Content-Type", "text/plain; charset=utf-8")
+	w.Header().Set("X-Content-Type-Options", "nosniff")
+	w.WriteHeader(http.StatusBadGateway)
 	writePayload([]byte(msg+"\n"+cause.Error()), w, true)
 }
 
@@ -30,9 +38,6 @@ func writePayload(payload []byte, w http.ResponseWriter, isError bool) {
 
 	_, err := w.Write(payload)
 	if err != nil {
-		log.Printf(
-			"Error writing content to http.ResponseWriter: payload=%s, err=%v",
-			payload,
-			err)
+		log.Printf("Error writing content to http.ResponseWriter: payload=%s, err=%v", payload, err)
 	}
 }
