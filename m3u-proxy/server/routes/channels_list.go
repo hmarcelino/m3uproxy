@@ -10,8 +10,10 @@ import (
 	"strings"
 )
 
+const UriChannelList = "/channels"
+
 func ChannelListRouter(config *config.Config) (string, func(w http.ResponseWriter, r *http.Request)) {
-	return "/channels", func(w http.ResponseWriter, r *http.Request) {
+	return UriChannelList, func(w http.ResponseWriter, r *http.Request) {
 		resp, err := http.Get(config.M3u.Url)
 		if err != nil {
 			webutils.BadGateway("Error loading channels list", err, w)
@@ -63,7 +65,7 @@ func modifyResponse(config *config.Config, payload string) ([]byte, error) {
 			return nil, fmt.Errorf("error registering m3u url. %v", err)
 		}
 
-		lines[i] = NewChannelProxy(config, channel.Id)
+		lines[i] = GetChanneUrl(config, channel.Id)
 	}
 
 	return []byte(strings.Join(lines, "\n")), nil

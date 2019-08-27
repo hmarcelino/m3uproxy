@@ -1,12 +1,16 @@
 package server
 
 import (
+	"context"
 	"fmt"
 	"github.com/gorilla/mux"
 	"github.com/hmarcelino/m3u-proxy/config"
 	"github.com/hmarcelino/m3u-proxy/server/routes"
 	"log"
 	"net/http"
+	"os"
+	"os/signal"
+	"time"
 )
 
 const Logo = ` 
@@ -39,9 +43,33 @@ func Start(config *config.Config) {
 		config.Server.Hostname,
 		config.Server.Port)
 
-	err := http.ListenAndServe(fmt.Sprintf(":%d", config.Server.Port), muxRouter)
+	server := &http.Server{Addr: fmt.Sprintf(":%d", config.Server.Port), Handler: muxRouter}
+
+	go func() {
+		err := server.ListenAndServe()
+		if err != nil {
+			log.Fatalf("Error starting server: %v", err)
+		}
+	}()
+
+	_, err := http.Get(fmt.Sprintf("http://localhost:%d%s", config.Server.Port, routes.UriChannelList))
 	if err != nil {
-		log.Fatalf("Error starting server: %v", err)
+		log.Fatalf("Error loading channels list: %s", err)
+	}
+
+	log.Println("List loaded successfully")
+
+	// Setting up signal capturing
+	stop := make(chan os.Signal, 1)
+	signal.Notify(stop, os.Interrupt)
+
+	// Waiting for SIGINT (pkill -2)
+	<-stop
+
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+	if err := server.Shutdown(ctx); err != nil {
+		// handle err
 	}
 }
 
