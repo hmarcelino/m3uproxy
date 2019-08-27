@@ -48,7 +48,7 @@ func Start(config *config.Config) {
 	go func() {
 		err := server.ListenAndServe()
 		if err != nil {
-			log.Fatalf("Error starting server: %v", err)
+			//log.Fatalf("Error starting server: %v", err)
 		}
 	}()
 
@@ -69,7 +69,7 @@ func Start(config *config.Config) {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 	if err := server.Shutdown(ctx); err != nil {
-		// handle err
+		// ignoring error
 	}
 }
 
