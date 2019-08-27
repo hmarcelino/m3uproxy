@@ -18,50 +18,57 @@ const HeaderRange = "Range"
 
 func ChannelRoute(config *config.Config) (string, func(w http.ResponseWriter, r *http.Request)) {
 	return "/channels/{id}", func(w http.ResponseWriter, r *http.Request) {
+
+		var channelAddr *db.Channel
+		var err error
+
 		vars := mux.Vars(r)
 		channelId := vars["id"]
 
-		channelAddr, err := db.LookupChannel(channelId)
+		// Decide if we want to lookup from the database
+		// or use the url provided in the request query parameter
+		overrideChannelAddr := r.URL.Query().Get(QueryParamLocation)
+		if overrideChannelAddr != "" {
+			newUrl, err := url.Parse(overrideChannelAddr)
+			if err != nil {
+				webutils.BadRequest("Invalid channel address override: "+overrideChannelAddr, err, w)
+				return
+			}
 
-		query := r.URL.Query()
-		newChannelAddr := query.Get(QueryParamLocation)
-		rangeValue := r.Header.Get(HeaderRange)
+			channelAddr = &db.Channel{Id: channelId, Source: newUrl}
 
-		if err != nil {
-			webutils.NotFound(w)
-			return
+		} else {
+
+			// Fallback to lookup in the database
+			// if no override channel address is provided
+			channelAddr, err = db.LookupChannel(channelId)
+			if err != nil {
+				webutils.NotFound(w)
+				return
+			}
 		}
 
 		dump, err := httputil.DumpRequest(r, false)
 		log.Printf("%q\r\nRemoteAddr: %s", dump, r.RemoteAddr)
 
-		if newChannelAddr != "" {
-			newUrl, err := url.Parse(newChannelAddr)
-			if err != nil {
-				webutils.BadRequest("Invalid channel address override: "+newChannelAddr, err, w)
-				return
-			}
-
-			channelAddr = &db.Channel{Id: channelId, Source: newUrl}
-		}
-
 		request := http.Request{URL: channelAddr.Source}
 		request.Header = map[string][]string{}
 		request.Header.Add(HeaderChannelId, channelId)
 
+		rangeValue := r.Header.Get(HeaderRange)
 		if rangeValue != "" {
 			request.Header.Add(HeaderRange, rangeValue)
 		}
 
 		proxy := newProxy(channelAddr)
-		if newChannelAddr == "" {
+		if overrideChannelAddr == "" {
 			proxy.ModifyResponse = GetResponseModifier(config)
 		}
 
 		log.Printf("Proxying request for channel %s %s redirect=%t",
 			channelId,
 			channelAddr.Source.String(),
-			newChannelAddr != "")
+			overrideChannelAddr != "")
 
 		proxy.ServeHTTP(w, &request)
 	}
