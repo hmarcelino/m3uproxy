@@ -46,14 +46,13 @@ func Start(config *config.Config) {
 	server := &http.Server{Addr: fmt.Sprintf(":%d", config.Server.Port), Handler: muxRouter}
 
 	go func() {
-		err := server.ListenAndServe()
-		if err != nil {
+		if err := server.ListenAndServe(); err != nil {
 			//log.Fatalf("Error starting server: %v", err)
 		}
 	}()
 
 	_, err := routes.LoadList(config)
-	if err != nil {
+	if routes.LoadList(config); err != nil {
 		log.Fatalf(err.Msg+" %v", err.Error)
 	}
 

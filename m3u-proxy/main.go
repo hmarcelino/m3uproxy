@@ -11,7 +11,14 @@ func main() {
 	flag.StringVar(&ymlConfigFile, "file", "", "Configuration file")
 	flag.Parse()
 
-	m3uServerConfig := config.LoadYml(ymlConfigFile)
+	var m3uServerConfig *config.Config
+
+	if ymlConfigFile != "" {
+		m3uServerConfig = config.LoadYml(ymlConfigFile)
+	} else {
+		m3uServerConfig = config.LoadEnv()
+	}
+
 	config.Validate(m3uServerConfig)
 	server.Start(m3uServerConfig)
 }
