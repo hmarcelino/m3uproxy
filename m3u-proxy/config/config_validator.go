@@ -19,9 +19,10 @@ func Validate(config *Config) {
 }
 
 func validateServerPort(config *Config) error {
-	if config.Server.Port == 0 {
-		return newValidationError("Invalid port for server. You must specify port number bigger than 1024")
+	if config.Server.Port <= 1024 {
+		return newValidationError("Invalid port for server. You must specify port number:  > 1024 and <")
 	}
+
 	return nil
 }
 

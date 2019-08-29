@@ -3,7 +3,7 @@
 Proxy written in Go. It will process an M3U response and transform the all channel addresses with new addresses. 
 It was built taking with the purpose that all traffic goes through it.
 
-### Endpoints
+## Endpoints
 
 * GET /
 ```bash
@@ -20,7 +20,7 @@ pong
 ```
 
 * GET /channels
-```
+```bash
 $> curl http://localhost:9090/ping
 
 #EXTM3U
@@ -32,14 +32,14 @@ http://localhost:9090/channels/984
 ```
 
 * GET /channels/{id}
-```
+```bash
 $> curl http://localhost:9090/channel/984
 
 ... stream ...
 ```
 
 * GET /channels/info/{id}
-```
+```bash
 $> curl http://localhost:9090/channel/info/984
 
 {
@@ -58,24 +58,28 @@ $> curl http://localhost:9090/channel/info/984
 }
 ``` 
 
+## FAQ
+
 ### Requirements:
 * Golang >= 1.11
-* docker (if you whish to build the container)   
+* docker (if you whish to build the container)
 
-
-### Setup
+**How to build the proxy**
 ```bash
-# Build the proxy
 go build m3u-proxy/main.go
+```
 
-# Run locally
-# Requires config file. Look for example in config/config-dev.yml
+**How to run locally with config file**
+Requires config file. Look for example in config/config-dev.yml
+```bash
 go run m3u-proxy/main.go -file <path to config file>
+```
 
-# Run locally with environment variables
-# Useful when running in a docker container
-export M3UPROXY_PORT="9090"
-export M3UPROXY_HOSTNAME="localhost"
-export M3UPROXY_M3U_URL="http://localhost:8080/channels.m3u"
+**How to run locally with environment variables**
+This is useful when running in a docker container
+```bash
+export M3U_PROXY_PORT="9090"
+export M3U_PROXY_HOSTNAME="localhost"
+export M3U_PROXY_CHANNELS_URL="http://localhost:8080/channels.m3u"
 go run m3u-proxy/main.go
 ```

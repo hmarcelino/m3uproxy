@@ -10,7 +10,7 @@ import (
 
 type Config struct {
 	Server struct {
-		Port     int
+		Port     uint16
 		Hostname string
 	}
 

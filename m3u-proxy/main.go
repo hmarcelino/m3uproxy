@@ -15,6 +15,7 @@ func main() {
 
 	if ymlConfigFile != "" {
 		m3uServerConfig = config.LoadYml(ymlConfigFile)
+
 	} else {
 		m3uServerConfig = config.LoadEnv()
 	}
