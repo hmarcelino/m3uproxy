@@ -80,6 +80,11 @@ This is useful when running in a docker container
 ```bash
 export M3U_PROXY_PORT="9090"
 export M3U_PROXY_HOSTNAME="localhost"
-export M3U_PROXY_CHANNELS_URL="http://localhost:8080/channels.m3u"
+export M3U_PROXY_CHANNELS_URL="<valid url to m3u list>"
 go run m3u-proxy/main.go
+
+#or 
+
+docker run -e M3U_PROXY_CHANNELS_URL="<valid url to m3u list>" -p 9090:9090  m3u-proxy:latest
+ 
 ```
