@@ -23,7 +23,7 @@ func NewChannel(channelAddr string) (*Channel, error) {
 	path := urlChannel.Path
 
 	return &Channel{
-		Id:     path[strings.LastIndex(path, "/")+1:],
+		Id:     path[strings.LastIndex(path, "/")+1:], // extract only the channel_id
 		Source: urlChannel,
 	}, nil
 }

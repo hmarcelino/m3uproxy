@@ -101,7 +101,7 @@ func modifyResponse(config *config.Config, payload string) ([]byte, error) {
 			return nil, fmt.Errorf("error registering m3u url. %v", err)
 		}
 
-		lines[i] = GetChanneUrl(config, channel.Id)
+		lines[i] = GetChannelUrl(config, channel.Id)
 	}
 
 	return []byte(strings.Join(lines, "\n")), nil

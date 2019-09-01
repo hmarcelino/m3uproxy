@@ -17,6 +17,8 @@ const HeaderChannelId = "X-ChannelId"
 const HeaderRange = "Range"
 
 func ChannelRoute(config *config.Config) (string, func(w http.ResponseWriter, r *http.Request)) {
+	var responseModifier = GetResponseModifier(config)
+
 	return "/channels/{id}", func(w http.ResponseWriter, r *http.Request) {
 
 		var channelAddr *db.Channel
@@ -62,7 +64,7 @@ func ChannelRoute(config *config.Config) (string, func(w http.ResponseWriter, r 
 
 		proxy := newProxy(channelAddr)
 		if overrideChannelAddr == "" {
-			proxy.ModifyResponse = GetResponseModifier(config)
+			proxy.ModifyResponse = responseModifier
 		}
 
 		log.Printf("Proxying request for channel %s %s redirect=%t",
@@ -89,7 +91,7 @@ func GetResponseModifier(config *config.Config) func(resp *http.Response) error 
 		channelId := resp.Request.Header.Get(HeaderChannelId)
 
 		if isRedirect && channelId != "" {
-			newReq, _ := url.Parse(GetChanneUrl(config, channelId))
+			newReq, _ := url.Parse(GetChannelUrl(config, channelId))
 			query := newReq.Query()
 			query.Set(QueryParamLocation, resp.Header.Get("Location"))
 
@@ -103,7 +105,7 @@ func GetResponseModifier(config *config.Config) func(resp *http.Response) error 
 
 // The return should match the previous route pattern.
 // Http://host:port/channels/channelId
-func GetChanneUrl(config *config.Config, id string) string {
+func GetChannelUrl(config *config.Config, id string) string {
 	return fmt.Sprintf(
 		"http://%s:%d/channels/%s",
 		config.Server.Hostname,
