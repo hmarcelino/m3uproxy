@@ -1,0 +1,30 @@
+package routes
+
+import (
+	"encoding/json"
+	"github.com/gorilla/mux"
+	"github.com/hmarcelino/m3u-proxy/config"
+	"github.com/hmarcelino/m3u-proxy/db"
+	"github.com/hmarcelino/m3u-proxy/server/webutils"
+	"net/http"
+)
+
+func ChannelInfoRoute(config *config.Config) (string, func(w http.ResponseWriter, r *http.Request)) {
+	return "/channels/info/{id}", func(w http.ResponseWriter, r *http.Request) {
+		vars := mux.Vars(r)
+		channelId := vars["id"]
+
+		channel, err := db.LookupChannel(channelId)
+		if err != nil {
+			webutils.NotFound(w)
+		}
+
+		jsonChannel, err := json.Marshal(channel)
+		if err != nil {
+			webutils.InternalServerError("Error building jsonChannel from a db.Channel", err, w)
+		}
+
+		w.Header().Set("Content-Type", "application/json")
+		webutils.Success(jsonChannel, w)
+	}
+}

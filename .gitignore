@@ -1,11 +1,8 @@
+# Intellij
 .idea/
 *.iml
 
-node_modules/
-dist/
-coverage/
-
+# Specific to project
+bin/
 files/
-
-output.log
 config/config-prod.yml
