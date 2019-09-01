@@ -28,11 +28,14 @@ if [[ $action == "" || ($action != 'build' && $action != 'docker-build') ]]; the
   exit 1
 fi
 
-rm -rf  bin
-go install m3u-proxy/main.go
-mv bin/main bin/m3uproxy
+rm -rf bin
 
-if [[ $action == 'docker-build' ]]; then
-   docker build -t m3u-proxy:latest .
+if [[ $action == 'build' ]]; then
+  go install m3u-proxy/main.go
+  mv bin/main bin/m3uproxy
+
+elif [[ $action == 'docker-build' ]]; then
+  CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go install m3u-proxy/main.go
+  mv bin/main bin/m3uproxy
+  docker build -t m3u-proxy:latest .
 fi
-
