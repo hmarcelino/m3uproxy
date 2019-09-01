@@ -6,3 +6,4 @@
 bin/
 files/
 config/config-prod.yml
+docker-compose.yml
