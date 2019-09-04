@@ -2,8 +2,8 @@ package main
 
 import (
 	"flag"
-	"github.com/hmarcelino/m3u-proxy/config"
-	"github.com/hmarcelino/m3u-proxy/server"
+	"github.com/hmarcelino/m3uproxy/config"
+	"github.com/hmarcelino/m3uproxy/server"
 )
 
 func main() {

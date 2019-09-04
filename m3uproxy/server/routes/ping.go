@@ -1,8 +1,8 @@
 package routes
 
 import (
-	"github.com/hmarcelino/m3u-proxy/config"
-	"github.com/hmarcelino/m3u-proxy/server/webutils"
+	"github.com/hmarcelino/m3uproxy/config"
+	"github.com/hmarcelino/m3uproxy/server/webutils"
 	"net/http"
 )
 

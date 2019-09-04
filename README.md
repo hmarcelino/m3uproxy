@@ -66,13 +66,13 @@ $> curl http://localhost:9090/channel/info/984
 
 **How to build the proxy**
 ```bash
-go build m3u-proxy/main.go
+go build m3uproxy/main.go
 ```
 
 **How to run locally with config file**
 Requires config file. Look for example in config/config-dev.yml
 ```bash
-go run m3u-proxy/main.go -file <path to config file>
+go run m3uproxy/main.go -file <path to config file>
 ```
 
 **How to run locally with environment variables**
@@ -81,10 +81,10 @@ This is useful when running in a docker container
 export M3U_PROXY_PORT="9090"
 export M3U_PROXY_HOSTNAME="localhost"
 export M3U_PROXY_CHANNELS_URL="<valid url to m3u list>"
-go run m3u-proxy/main.go
+go run m3uproxy/main.go
 
 #or 
 
-docker run -e M3U_PROXY_CHANNELS_URL="<valid url to m3u list>" -p 9090:9090  m3u-proxy:latest
+docker run -e M3U_PROXY_CHANNELS_URL="<valid url to m3u list>" -p 9090:9090  m3uproxy:latest
  
 ```

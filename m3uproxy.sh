@@ -24,18 +24,18 @@ action=$1
 if [[ $action == "" || ($action != 'build' && $action != 'docker-build') ]]; then
   # print usage information
   echo "No action or invalid action specifed"
-  cat m3u-proxy.sh | grep '##' | grep -v 'cat' | sed 's/^##//' | sed 's/^ //'
+  cat m3uproxy.sh | grep '##' | grep -v 'cat' | sed 's/^##//' | sed 's/^ //'
   exit 1
 fi
 
 rm -rf bin
 
 if [[ $action == 'build' ]]; then
-  go install m3u-proxy/main.go
+  go install m3uproxy/main.go
   mv bin/main bin/m3uproxy
 
 elif [[ $action == 'docker-build' ]]; then
-  CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go install m3u-proxy/main.go
+  CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go install m3uproxy/main.go
   mv bin/main bin/m3uproxy
-  docker build -t m3u-proxy:latest .
+  docker build -t m3uproxy:latest .
 fi
