@@ -3,6 +3,7 @@ version: '3'
 services:
   m3uproxy:
     image: m3u-proxy:latest
+    container_name: m3uproxy
     environment:
       - "M3U_PROXY_HOSTNAME=localhost"
       - "M3U_PROXY_CHANNELS_URL=<valid url to m3u list>"
