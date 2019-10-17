@@ -21,7 +21,7 @@ pong
 
 * GET /channels
 ```bash
-$> curl http://localhost:9090/ping
+$> curl http://localhost:9090/channels
 
 #EXTM3U
 #EXTINF:-1 tvg-id="ABC FHD" tvg-name="ABC FHD" tvg-logo="http://....png" group-title="group A"
