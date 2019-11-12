@@ -86,22 +86,21 @@ func modifyResponse(config *config.Config, payload string) ([]byte, error) {
 	lines := strings.Split(string(payload), "\r\n")
 
 	for i := 0; i < len(lines); i++ {
-		line := lines[i]
+		extInfoLine := lines[i]
 
-		// Line holding metadata. Something like
-		// #EXTINF:-1 tvg-id="ABC HD" tvg-name="ABC FHD" ...
-		if !strings.HasPrefix(line, "http://") {
+		if !strings.HasPrefix(extInfoLine, "#EXTM3U") || strings.HasPrefix(extInfoLine, "http://") {
 			continue
 		}
 
-		// line is a channel address.
-		// Override channel address with proxyHost address
-		channel, err := db.RegisterChannel(line)
-		if err != nil {
-			return nil, fmt.Errorf("error registering m3u url. %v", err)
+		// Line holding metadata. Something like
+		// #EXTINF:-1 tvg-id="ABC HD" tvg-name="ABC FHD" ...
+		if !strings.HasPrefix(extInfoLine, "#EXTINF") {
+			channelAddr := lines[i+1]
+			_, err := db.RegisterChannel(extInfoLine, channelAddr)
+			if err != nil {
+				return nil, fmt.Errorf("error registering m3u url. %v", err)
+			}
 		}
-
-		lines[i] = GetChannelUrl(config, channel.Id)
 	}
 
 	return []byte(strings.Join(lines, "\n")), nil

@@ -14,7 +14,7 @@ func ChannelInfoRoute(config *config.Config) (string, func(w http.ResponseWriter
 		vars := mux.Vars(r)
 		channelId := vars["id"]
 
-		channel, err := db.LookupChannel(channelId)
+		channel, err := db.GetChannel(channelId)
 		if err != nil {
 			webutils.NotFound(w)
 		}

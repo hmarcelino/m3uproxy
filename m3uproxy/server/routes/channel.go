@@ -43,7 +43,7 @@ func ChannelRoute(config *config.Config) (string, func(w http.ResponseWriter, r 
 
 			// Fallback to lookup in the database
 			// if no override channel address is provided
-			channelAddr, err = db.LookupChannel(channelId)
+			channelAddr, err = db.GetChannel(channelId)
 			if err != nil {
 				webutils.NotFound(w)
 				return

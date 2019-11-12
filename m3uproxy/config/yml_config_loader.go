@@ -15,7 +15,8 @@ type Config struct {
 	}
 
 	M3u struct {
-		Url string
+		Url  string
+		Sort map[string]string
 	}
 }
 
